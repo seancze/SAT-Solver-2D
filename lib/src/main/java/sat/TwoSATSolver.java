@@ -138,7 +138,7 @@ public class TwoSATSolver {
             condensedGraph.put(key, values);
         }
 
-        // This algorithm for assigning of boolean expressions is explained in the same source listed above
+        // This algorithm for assigning of boolean expressions is explained in the same source listed in TwoSATSolverTest.java
         for (Integer el : reversedStack) {
             Integer absoluteValue = Math.abs(el);
             if(result.get(absoluteValue) == null) {
