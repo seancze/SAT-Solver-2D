@@ -18,12 +18,12 @@ public class randomSATTest {
         try {
             //read file
             //todo: CHANGE THE FILEPATH BEFORE TESTING
-            File cnffile = new File("C:\\Users\\weean\\Desktop\\test.cnf");
+            File cnffile = new File("C:\\Users\\jitth\\Desktop\\algos\\SAT-Solver-2D\\lib\\src\\main\\java\\testcases\\test4-2sat.cnf");
             FileReader fr = new FileReader(cnffile);
             BufferedReader br = new BufferedReader(fr);
             int NUM_LIT = 0;
             int NUM_CLAUSES = 0;
-            int NUM_ITER = 10000;     //change this depending on how many times the code should try before exiting with a false
+            int NUM_ITER = 100;     //change this depending on how many times the code should try before exiting with a false
 
             String line;
             //initializing by looking for problem line
@@ -41,8 +41,8 @@ public class randomSATTest {
             }
 
             //initing arrays
-            Boolean[] litArray = new Boolean[NUM_LIT];
-            Boolean[][] negateArray = new Boolean[NUM_CLAUSES][2];
+            boolean[] litArray = new boolean[NUM_LIT];
+            boolean[][] negateArray = new boolean[NUM_CLAUSES][2];
             Integer[][] clauseArray = new Integer[NUM_CLAUSES][2];      //2 because 2SAT
 
             //set litArray to false
@@ -58,14 +58,13 @@ public class randomSATTest {
                     //check if line is a problem line
                     if (line.charAt(0) != 'p') {
                         String[] clauses = line.split(" ");
-
                         for (int i=0; i<2; i++) {
                             Integer clauseNumber = Integer.parseInt(clauses[i]);
-                            System.out.println(clauseNumber);
+                            // System.out.println("clausenumber:"+clauseNumber);
                             clauseArray[linecounter][i] = Math.abs(clauseNumber);
                             if (clauseNumber < 0) {
                                 negateArray[linecounter][i] = true;
-                                System.out.println("NEGATIVE");
+                                // System.out.println("NEGATIVE");
                             }
 
                         }
@@ -75,6 +74,8 @@ public class randomSATTest {
             }
 
             //todo: run main solver
+            
+
             boolean result = randomSATSolver.mainSolver(litArray, negateArray, clauseArray, NUM_CLAUSES, NUM_ITER);
             if(result){
                 //test printing
@@ -90,6 +91,7 @@ public class randomSATTest {
             long stopTime = System.currentTimeMillis();
             System.out.println(stopTime - startTime);
             //todo: obtain truth assignment as output to system.out.println
+            br.close();
         } catch(IOException e1){
             e1.printStackTrace();
         }

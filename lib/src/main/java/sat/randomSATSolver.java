@@ -18,42 +18,28 @@ public class randomSATSolver {
     }
 
     //clause solver (or a very elaborate OR)
-    static boolean clauseSolver(Boolean[] litArray, Boolean[][] negateArray, Integer[][] clauseArray, Integer clauseNumber){
-        Integer lit1address = clauseArray[clauseNumber][0];
-        Integer lit2address = clauseArray[clauseNumber][1];
-        Boolean lit1bool = litArray[lit1address-1];
-        if(negateArray[clauseNumber][0]){
-            lit1bool = !lit1bool;
+    static boolean clauseSolver(boolean[] litArray, boolean[][] negateArray, Integer[][] clauseArray, Integer clauseNumber){
+        if(litArray[clauseArray[clauseNumber][0]-1]){
+            negateArray[clauseNumber][0] = !negateArray[clauseNumber][0];
         }
-        Boolean lit2bool = litArray[lit2address];
-        if(negateArray[clauseNumber][1]){
-            lit2bool = !lit2bool;
+        if(litArray[clauseArray[clauseNumber][1]-1]){
+            negateArray[clauseNumber][1] = !negateArray[clauseNumber][1];
         }
-        return lit1bool|lit2bool;
+        return negateArray[clauseNumber][0]|negateArray[clauseNumber][1];
     }
 
     //todo: troubleshoot this cus result is always true for some reason?
     //formula solver, returns index of one random unsat clause if not satisfiable and NUM_CLAUSES if satisfiable
-    static Integer formulaSolver(Boolean[] litArray, Boolean[][] negateArray, Integer[][] clauseArray,  Integer NUM_CLAUSES){
-        boolean result = true;      //flag for satisfiability
-        Integer[] unsatClauses = new Integer[2];
-        Integer numUnsat = 0;
+    static Integer formulaSolver(boolean[] litArray, boolean[][] negateArray, Integer[][] clauseArray,  Integer NUM_CLAUSES){
         for(int i=0; i<NUM_CLAUSES; i++){
-            boolean output = clauseSolver(litArray, negateArray, clauseArray, i);
-//            if(output){
-//                continue;
-//            } else if (numUnsat==0){
-//                result = false;
-//                unsatClauses[numUnsat] = i;
-//                numUnsat=1;
-//            } else if (numUnsat==1){
-//                unsatClauses[numUnsat] = i;
-//                numUnsat = 2;
-//            } else if (numUnsat ==2){
-//                return unsatClauses[coinFlip()];
-//            }
+            //make copy of negate
+            boolean[][] negateCopy = new boolean[negateArray.length][negateArray[0].length];
+            for (int j = 0; j < negateCopy.length; j++){
+                negateCopy[j] = Arrays.copyOf(negateArray[j], negateArray[j].length);
+            }
+                    
+            boolean output = clauseSolver(litArray, negateCopy, clauseArray, i);
             if(!output) {
-                result = false;
                 return i;
             }
         }
@@ -61,24 +47,32 @@ public class randomSATSolver {
     }
 
     //todo: main solver - issue could be here too
-    static boolean mainSolver(Boolean[] litArray, Boolean[][] negateArray, Integer[][] clauseArray, Integer NUM_CLAUSES, Integer NUM_ITER){
+    static boolean mainSolver(boolean[] litArray, boolean[][] negateArray, Integer[][] clauseArray, Integer NUM_CLAUSES, Integer NUM_ITER){
+        System.out.println("Clauses:"+Arrays.deepToString(clauseArray));
+        System.out.println("negatearray:"+Arrays.deepToString(negateArray));
+        
+        System.out.println("iter "+NUM_ITER);
         for(int i=0; i<NUM_ITER; i++){
+            System.out.println("i " + i+"-----------------");
             Integer output = formulaSolver(litArray, negateArray, clauseArray, NUM_CLAUSES);
+            System.out.println(Arrays.toString(litArray));
+            System.out.println("output:"+output+" clauses"+NUM_CLAUSES);
             if(output == NUM_CLAUSES){
-                //test printing
-                System.out.println(Arrays.toString(litArray));
-                System.out.println(Arrays.deepToString(negateArray));
-                System.out.println(Arrays.deepToString(clauseArray));
+                for (int j=0; j<NUM_CLAUSES;j++){
+                    if(litArray[clauseArray[j][0]-1]){
+                        negateArray[j][0] = !negateArray[j][0];
+                    }
+                    if(litArray[clauseArray[j][1]-1]){
+                        negateArray[j][1] = !negateArray[j][1];
+                    }
+                }
                 return true;
-            } else {
-                Integer coin = coinFlip();
-                litArray[clauseArray[output][coin]-1] = !litArray[clauseArray[output][coin]-1];
-                //test printing
-                System.out.println(Arrays.toString(litArray));
-                System.out.println(Arrays.deepToString(negateArray));
-                System.out.println(Arrays.deepToString(clauseArray));
             }
+            Integer coin = coinFlip();
+            
+            litArray[clauseArray[output][coin]-1] = !litArray[clauseArray[output][coin]-1];
         }
+
         return false;
     }
     //start a loop to exit after a certain number of iterations
