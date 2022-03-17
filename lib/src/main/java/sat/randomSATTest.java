@@ -18,7 +18,7 @@ public class randomSATTest {
         try {
             //read file
             //todo: CHANGE THE FILEPATH BEFORE TESTING
-            File cnffile = new File("C:\\Users\\jitth\\Desktop\\algos\\SAT-Solver-2D\\lib\\src\\main\\java\\testcases\\test1-2sat.cnf");
+            File cnffile = new File(args[0]);
             FileReader fr = new FileReader(cnffile);
             BufferedReader br = new BufferedReader(fr);
             int NUM_LIT = 0;
