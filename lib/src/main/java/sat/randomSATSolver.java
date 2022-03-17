@@ -17,7 +17,7 @@ public class randomSATSolver {
          */
     }
 
-    //clause solver (or a very elaborate OR)
+    //clause solver (aka a very elaborate OR)
     static boolean clauseSolver(boolean[] litArray, boolean[][] negateArray, Integer[][] clauseArray, Integer clauseNumber){
         if(litArray[clauseArray[clauseNumber][0]-1]){
             negateArray[clauseNumber][0] = !negateArray[clauseNumber][0];
@@ -28,7 +28,6 @@ public class randomSATSolver {
         return negateArray[clauseNumber][0]|negateArray[clauseNumber][1];
     }
 
-    //todo: troubleshoot this cus result is always true for some reason?
     //formula solver, returns index of one random unsat clause if not satisfiable and NUM_CLAUSES if satisfiable
     static Integer formulaSolver(boolean[] litArray, boolean[][] negateArray, Integer[][] clauseArray,  Integer NUM_CLAUSES){
         for(int i=0; i<NUM_CLAUSES; i++){
@@ -46,17 +45,10 @@ public class randomSATSolver {
         return NUM_CLAUSES;
     }
 
-    //todo: main solver - issue could be here too
+    //main solver 
     static boolean mainSolver(boolean[] litArray, boolean[][] negateArray, Integer[][] clauseArray, Integer NUM_CLAUSES, Integer NUM_ITER){
-        System.out.println("Clauses:"+Arrays.deepToString(clauseArray));
-        System.out.println("negatearray:"+Arrays.deepToString(negateArray));
-        
-        System.out.println("iter "+NUM_ITER);
         for(int i=0; i<NUM_ITER; i++){
-            System.out.println("i " + i+"-----------------");
             Integer output = formulaSolver(litArray, negateArray, clauseArray, NUM_CLAUSES);
-            System.out.println(Arrays.toString(litArray));
-            System.out.println("output:"+output+" clauses"+NUM_CLAUSES);
             if(output == NUM_CLAUSES){
                 for (int j=0; j<NUM_CLAUSES;j++){
                     if(litArray[clauseArray[j][0]-1]){

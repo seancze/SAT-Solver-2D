@@ -60,11 +60,9 @@ public class randomSATTest {
                         String[] clauses = line.split(" ");
                         for (int i=0; i<2; i++) {
                             Integer clauseNumber = Integer.parseInt(clauses[i]);
-                            // System.out.println("clausenumber:"+clauseNumber);
                             clauseArray[linecounter][i] = Math.abs(clauseNumber);
                             if (clauseNumber < 0) {
                                 negateArray[linecounter][i] = true;
-                                // System.out.println("NEGATIVE");
                             }
 
                         }
@@ -72,16 +70,12 @@ public class randomSATTest {
                     }
                 }
             }
-
-            //todo: run main solver
-            
-
             boolean result = randomSATSolver.mainSolver(litArray, negateArray, clauseArray, NUM_CLAUSES, NUM_ITER);
             if(result){
                 //test printing
-                System.out.println(Arrays.toString(litArray));
-                System.out.println(Arrays.deepToString(negateArray));
-                System.out.println(Arrays.deepToString(clauseArray));
+                System.out.println("Literals:" + Arrays.toString(litArray));
+                System.out.println("Literal map:" + Arrays.deepToString(clauseArray));
+                System.out.println("final cnf equation:" + Arrays.deepToString(negateArray));
                 System.out.println("SATISFIABLE");
             } else {
                 System.out.println("UNSATISFIABLE");
@@ -89,8 +83,7 @@ public class randomSATTest {
 
             //end timing and output to system.out.println
             long stopTime = System.currentTimeMillis();
-            System.out.println(stopTime - startTime);
-            //todo: obtain truth assignment as output to system.out.println
+            System.out.println("Time:"+ (stopTime - startTime));
             br.close();
         } catch(IOException e1){
             e1.printStackTrace();
