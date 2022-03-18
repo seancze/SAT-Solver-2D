@@ -46,3 +46,15 @@ The following outlines how the DFS algorithm was implemented.
     2. Do the same for nodes adjacent to the element.
     3. Note: Only store the element and the nodes adjacent to it within the dictionary if it cannot be found within the dictionary
 7. Return `result`
+
+## Randomized 2-SAT Solver (Random walk type algorithm)
+The following outlines how the randomized solver was implemented.
+1. Parse cnf file and dump contents into three arrays as follows
+    1. `litArray` represents the current truth assignment of literals in order, initialized to contain all `false`
+    2. `negateArray` contains  `true` at the literal of a specific clause if the literal is inverted in the formula, else `false` by default
+    3. `clauseArray` contains the literal number (ie. `x_1 ∧ x_2` of clause 1 returns `1` at `clauseArray[0][0]` and `2` at `clauseArray[0][1]`
+2. Call `mainSolver` to solve the formula until either the formula is satisfiable with a specific truth assginment or the number of iterations reached `NUM_ITER` (declared in main)
+    1. Solve formula with current truth assignment using `formulaSolver`
+    2. If formula is not satisfied, `coinflip` to determine a literal in the first unsatisfiable clause to flip and proceed to next iteration
+    3. If formula is satisfied, return
+3. Return `litArray`
