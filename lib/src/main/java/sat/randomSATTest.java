@@ -1,12 +1,12 @@
-package randomsat;
+package sat;
 
 //import statements
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.lang.*;
-import java.util.*;
+import java.util.Arrays;
 
 public class randomSATTest {
 
@@ -72,10 +72,26 @@ public class randomSATTest {
             }
             boolean result = randomSATSolver.mainSolver(litArray, negateArray, clauseArray, NUM_CLAUSES, NUM_ITER);
             if(result){
+                StringBuilder ans = new StringBuilder();
                 //test printing
-                System.out.println("Literals:" + Arrays.toString(litArray));
-                System.out.println("Literal map:" + Arrays.deepToString(clauseArray));
-                System.out.println("final cnf equation:" + Arrays.deepToString(negateArray));
+                for (int i = 0; i < litArray.length; i++) {
+                    boolean assignedBoolean = litArray[i];
+                    if (assignedBoolean) {
+                        ans.append("1");
+                    } else {
+                        ans.append("0");
+                    }
+                    // Add fullstop '.' if last boolean value
+                    // Otherwise, add space instead
+                    if (i == litArray.length-1) {
+                        ans.append(".");
+                    } else {
+                        ans.append(" ");
+                    }
+                }
+
+                System.out.println(ans);
+
                 System.out.println("SATISFIABLE");
             } else {
                 System.out.println("UNSATISFIABLE");

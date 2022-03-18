@@ -69,7 +69,23 @@ public class TwoSATSolverTest {
             System.out.println("UNSATISFIABLE");
         } else {
             System.out.println("SATISFIABLE");
-            System.out.println("Result: " + result);
+            StringBuilder s = new StringBuilder();
+            for (int i = 1; i < result.size()+1; i++) {
+                String assignedBoolean = "0";
+                if (result.get(i))
+                    assignedBoolean = "1";
+                s.append(assignedBoolean);
+
+                // Add fullstop '.' if last boolean value
+                // Otherwise, add space instead
+                if (i == result.size()) {
+                    s.append(".");
+                } else {
+                    s.append(" ");
+                }
+
+            }
+            System.out.println(s);
         }
         System.out.println("Time Taken: " + timeTaken/1000000.0 + "ms");
     }

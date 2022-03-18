@@ -1,4 +1,4 @@
-package randomsat;
+package sat;
 
 //import statements
 import java.util.Arrays;
